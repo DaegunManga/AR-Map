@@ -51,5 +51,7 @@
 	<false/>
 	<key>NSLocationWhenInUseUsageDescription</key>
   <string>Program requires GPS to track cars and job orders</string>
+	<key>NSCameraUsageDescription</key>
+  <string>The camera is needed for AR functionality</string>
 </dict>
 </plist>
