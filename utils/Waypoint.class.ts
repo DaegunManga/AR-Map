@@ -1,5 +1,15 @@
 import {getDistance} from 'geolib';
-import {Coordinate, HeadingTo, Range, Waypoint, Waypoints} from './waypoints';
+import {
+  AFTER_ATM_CORNER,
+  ATM_CORNER,
+  Coordinate,
+  DAEUGN_MID_SCH,
+  HeadingTo,
+  Range,
+  START_RANGE,
+  Waypoint,
+  Waypoints,
+} from './waypoints';
 
 export default class WaypointUtils {
   static isInRange(range: Range, target: Waypoint): boolean {
@@ -46,5 +56,32 @@ export default class WaypointUtils {
     }
 
     return 'backward';
+  }
+
+  static getWaypoints(
+    name: '대건고' | '대건중' | '대건학시' | '체육관',
+  ): Waypoints {
+    if (name === '대건고') {
+      return [
+        START_RANGE,
+        ATM_CORNER,
+        AFTER_ATM_CORNER,
+        DAEUGN_MID_SCH,
+      ] as Waypoints;
+    } else if (name === '대건중') {
+      return [
+        START_RANGE,
+        ATM_CORNER,
+        AFTER_ATM_CORNER,
+        DAEUGN_MID_SCH,
+      ] as Waypoints;
+    }
+
+    return [
+      START_RANGE,
+      ATM_CORNER,
+      AFTER_ATM_CORNER,
+      DAEUGN_MID_SCH,
+    ] as Waypoints;
   }
 }
