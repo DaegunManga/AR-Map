@@ -12,20 +12,25 @@ import Home from './pages/Home';
 import Navigation from './pages/Navigation';
 import {Platform} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
+import {Waypoints} from './utils/waypoints';
+import WaypointUtils from './utils/Waypoint.class';
 
 interface LocContextType {
   loc: '대건고' | '대건중' | '대건학사' | '체육관';
+  waypoints: Waypoints;
 }
 
 const Stack = createNativeStackNavigator();
 
 export const LocContext = createContext<LocContextType>({
   loc: '대건고',
+  waypoints: WaypointUtils.getWaypoints('대건고'),
 });
 
 export default function App() {
   const locContextDefault: LocContextType = {
     loc: '대건고',
+    waypoints: WaypointUtils.getWaypoints('대건고'),
   };
 
   useEffect(() => {
@@ -38,8 +43,8 @@ export default function App() {
     <LocContext.Provider value={locContextDefault}>
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Navi" component={Navigation} />
+          <Stack.Screen name="Home" component={Home} />
         </Stack.Navigator>
       </NavigationContainer>
     </LocContext.Provider>
