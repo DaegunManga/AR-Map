@@ -1,17 +1,26 @@
 import {useContext, useEffect, useState} from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {LocContext} from '../app';
-import {Waypoint as WaypointType, Waypoints} from '../utils/waypoints';
+import {
+  HeadingTo,
+  Waypoint as WaypointType,
+  Waypoints,
+} from '../utils/waypoints';
 import Geolocation from '@react-native-community/geolocation';
 import {BackHandler} from 'react-native';
 import {ViroARSceneNavigator} from '@viro-community/react-viro';
 import Navigator from '../components/AR/Navigator';
 import Arrow from '../components/AR/Arrow';
 import Waypoint from '../components/AR/Waypoint';
+import WaypointUtils from '../utils/Waypoint.class';
 
 export default function Navigation() {
   const navigation = useContext(LocContext);
-  const directions = useState<Waypoints>([]);
+  const [directions, setDirections] = useState<Waypoints>([]);
+  const [locationInfo, setLocationInfo] = useState<LocationInfo>({
+    meter: 0,
+    direction: 'foward',
+  });
   const [currentLoc, setCurrentLoc] = useState<WaypointType>({
     type: 'waypoint',
     latitude: 0,
@@ -19,9 +28,10 @@ export default function Navigation() {
   });
 
   useEffect(() => {
+    setDirections(navigation.waypoints);
     const watchGeoID = Geolocation.watchPosition(
       loc => {
-        const {latitude, longitude, heading} = loc.coords;
+        const {latitude, longitude} = loc.coords;
         setCurrentLoc({type: 'waypoint', latitude, longitude});
       },
       () => BackHandler.exitApp(),
@@ -32,9 +42,20 @@ export default function Navigation() {
     };
   }, []);
 
+  useEffect(() => {
+    const waypoint = directions[0];
+    if (WaypointUtils.isInRange(waypoint, currentLoc)) {
+      setDirections(() => directions.filter(d => waypoint !== d));
+    }
+    setLocationInfo(p => ({
+      direction: WaypointUtils.headingTo(directions, currentLoc),
+      meter: WaypointUtils.getDistance(waypoint.waypoint1, currentLoc),
+    }));
+  }, [currentLoc]);
+
   return (
     <SafeAreaProvider>
-      <Arrow result={'foward'} meter={500} />
+      <Arrow result={locationInfo.direction} meter={locationInfo.meter} />
       <Waypoint waypoints={navigation.waypoints} />
       <ViroARSceneNavigator
         autofocus={true}
@@ -43,4 +64,9 @@ export default function Navigation() {
       />
     </SafeAreaProvider>
   );
+}
+
+interface LocationInfo {
+  meter: number;
+  direction: HeadingTo;
 }
