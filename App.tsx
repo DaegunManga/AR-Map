@@ -20,19 +20,16 @@ interface LocContextType {
   waypoints: Waypoints;
 }
 
-const Stack = createNativeStackNavigator();
+// const Stack = createNativeStackNavigator();
 
-export const LocContext = createContext<LocContextType>({
+export const LocContext = createContext<LocContextType | undefined>(undefined);
+
+const locContextDefault: LocContextType = {
   loc: '대건고',
   waypoints: WaypointUtils.getWaypoints('대건고'),
-});
+};
 
 export default function App() {
-  const locContextDefault: LocContextType = {
-    loc: '대건고',
-    waypoints: WaypointUtils.getWaypoints('대건고'),
-  };
-
   useEffect(() => {
     if (Platform.OS === 'ios') {
       Geolocation.requestAuthorization();
@@ -41,12 +38,15 @@ export default function App() {
 
   return (
     <LocContext.Provider value={locContextDefault}>
-      <NavigationContainer>
+      {/* <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen name="Navi" component={Navigation} />
           <Stack.Screen name="Home" component={Home} />
         </Stack.Navigator>
-      </NavigationContainer>
+      </NavigationContainer> */}
+      <Navigation
+        info={{loc: '대건고', waypoints: WaypointUtils.getWaypoints('대건고')}}
+      />
     </LocContext.Provider>
   );
 }
