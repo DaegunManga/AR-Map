@@ -26,16 +26,20 @@ export default function Arrow({result, meter}: ArrowProps) {
 const styles = StyleSheet.create({
   view: {
     display: 'flex',
+    position: 'absolute',
     justifyContent: 'center',
     alignContent: 'center',
     flexDirection: 'column',
+    top: 0,
+    right: 0,
   },
   arrow_icon: {
     fontSize: 30,
     fontWeight: 'bold',
-    color: 'black',
+    color: 'white',
   },
   arrow_meter: {
     fontSize: 13,
+    color: 'white',
   },
 });

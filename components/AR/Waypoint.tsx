@@ -1,4 +1,4 @@
-import {Text, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {Waypoints} from '../../utils/waypoints';
 
 interface WaypointProps {
@@ -11,7 +11,7 @@ interface WaypointBoxProps {
 
 export default function Waypoint({waypoints}: WaypointProps) {
   return (
-    <View>
+    <View style={Styles.View}>
       {waypoints.map((v, i) => (
         <WaypointBox key={i} name={v.name} />
       ))}
@@ -21,8 +21,29 @@ export default function Waypoint({waypoints}: WaypointProps) {
 
 function WaypointBox({name}: WaypointBoxProps) {
   return (
-    <View>
-      <Text>{name}</Text>
+    <View style={Styles.WaypointBoxView}>
+      <Text style={Styles.WaypointText}>{name}</Text>
     </View>
   );
 }
+
+const Styles = StyleSheet.create({
+  View: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    width: 100,
+    textAlign: 'center',
+    borderBottomWidth: 1,
+    borderColor: 'white',
+    flexDirection: 'column',
+  },
+  WaypointBoxView: {
+    display: 'flex',
+    borderBottomWidth: 1,
+    borderColor: 'white',
+    color: 'white',
+  },
+  WaypointText: {
+    color: 'white',
+  },
+});
