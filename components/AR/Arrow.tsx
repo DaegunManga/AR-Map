@@ -18,7 +18,18 @@ export default function Arrow({result, meter}: ArrowProps) {
           ? '←'
           : '↓'}
       </Text>
-      <Text style={styles.arrow_meter}>{meter}m</Text>
+      <View>
+        <Text>
+          {result === 'foward'
+            ? '직진'
+            : result === 'right'
+            ? '우회전'
+            : result === 'left'
+            ? '좌회전'
+            : '경로를 이탈하였습니다.'}
+        </Text>
+        <Text style={styles.arrow_meter}>{meter}m</Text>
+      </View>
     </View>
   );
 }
