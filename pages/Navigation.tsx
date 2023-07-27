@@ -11,6 +11,9 @@ import Navigator from '../components/AR/Navigator';
 import Arrow from '../components/AR/Arrow';
 import Waypoint from '../components/AR/Waypoint';
 import WaypointUtils from '../utils/Waypoint.class';
+import {useRecoilState} from 'recoil';
+import {CurrentLocAtom} from '../atom/currentLocation';
+import GoogleMap from '../components/AR/GoogleMap';
 
 interface NavigationProps {
   info: {
@@ -26,11 +29,7 @@ export default function Navigation({info}: NavigationProps) {
     meter: 0,
     direction: 'foward',
   });
-  const [currentLoc, setCurrentLoc] = useState<WaypointType>({
-    type: 'waypoint',
-    latitude: 0,
-    longitude: 0,
-  });
+  const [currentLoc, setCurrentLoc] = useRecoilState(CurrentLocAtom);
 
   useEffect(() => {
     const watchGeoID = Geolocation.watchPosition(
@@ -73,6 +72,7 @@ export default function Navigation({info}: NavigationProps) {
     <SafeAreaProvider>
       <Arrow result={locationInfo.direction} meter={locationInfo.meter} />
       <Waypoint waypoints={navigation.waypoints} />
+      <GoogleMap />
       <ViroARSceneNavigator
         autofocus={true}
         initialScene={{scene: Navigator}}

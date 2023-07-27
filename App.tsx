@@ -14,6 +14,7 @@ import {Platform} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import {Waypoints} from './utils/waypoints';
 import WaypointUtils from './utils/Waypoint.class';
+import {RecoilRoot} from 'recoil';
 
 interface LocContextType {
   loc: '대건고' | '대건중' | '대건학사' | '체육관';
@@ -37,16 +38,21 @@ export default function App() {
   }, []);
 
   return (
-    <LocContext.Provider value={locContextDefault}>
-      {/* <NavigationContainer>
+    <RecoilRoot>
+      <LocContext.Provider value={locContextDefault}>
+        {/* <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen name="Navi" component={Navigation} />
           <Stack.Screen name="Home" component={Home} />
         </Stack.Navigator>
       </NavigationContainer> */}
-      <Navigation
-        info={{loc: '대건고', waypoints: WaypointUtils.getWaypoints('대건고')}}
-      />
-    </LocContext.Provider>
+        <Navigation
+          info={{
+            loc: '대건고',
+            waypoints: WaypointUtils.getWaypoints('대건고'),
+          }}
+        />
+      </LocContext.Provider>
+    </RecoilRoot>
   );
 }
